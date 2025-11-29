@@ -38,7 +38,7 @@ int runMenu() {
             }
         }
 
-        char key = _getch();
+        char key = _getch(); //getch is taking the "value" of arrow keys in this case 72 and 80 and 13 for enter as these are sepciasl keys we can use conditionals and their values to simaulate a selectable menu thingy
 
         // Up arrow
         if (key == 72 && selected > 0) {

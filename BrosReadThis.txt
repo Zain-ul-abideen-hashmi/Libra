@@ -1,0 +1,7 @@
+Muneeb and abdullahi kindly if you add anything just write a few lines here so we can see what changes are being made and at what time
+
+and also explain shortly anthing new you added or something new we need to know example
+
+Zain to muneeb and abdulahi: "There are 2 types of files one is cpp and the other is header files cpp is the logic and header ones are to decalre stuff so the other files know
+that there are functions and stuff n other files you can do ths by making the haeder file and write its function name only
+then in cpp file make logic of the function and when we need to call it in a cpp file make sure to add #include"name.h"  this way everything should work fine
