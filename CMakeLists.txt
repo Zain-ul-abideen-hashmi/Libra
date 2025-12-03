@@ -4,8 +4,10 @@ project(Libra)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Libra
-        "Libra main.cpp"
-        "Libra main.h"
-        menu.cpp
-        menu.h)
+        "src/Libra main.cpp"
+        "Include/Libra main.h"
+        src/menu.cpp
+        Include/menu.h
+        src/LoginAsAdmin.cpp
+        Include/LoginAsAdmin.h)
 

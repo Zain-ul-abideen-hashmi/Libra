@@ -8,3 +8,9 @@ then in cpp file make logic of the function and when we need to call it in a cpp
 
 12/1/25 8:04 pm
 Zain to other members "Wasnt free today so i pnly added two lines of code in main cpp file titled Libra i added cing.ignore and con.get so it looks more professional and program only ends when we click enter "
+
+
+12/03/2025 7:46pm
+Zain to other members "Bros I did it i actualy managed to add a way for us to only log in as admins through a verification code sent to emails which will be hardcoded
+took me like 5 hours of constant debugging but now it works i will  explain in person because this is a little too much for comments basically we generate a 6 digit otp use a pyhton script to send it to emails using an email i made today
+and then a simple if condition  "
