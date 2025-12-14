@@ -2,16 +2,17 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include "../Include/Admin.h"
 
-
-
-bool adminLogin() {
+// We put your logic inside the class scope
+bool Admin::login() {
     std::string adminName;
+    std::cout << "\n=== ADMIN PORTAL ===\n";
     std::cout << "Enter admin name: ";
     std::cin >> adminName;
 
     std::string adminNames[] = {"Zain", "Muneeb", "Abdullahi"};
-    std::string adminEmails[] = {"junaibhashmi@gmail.com", "muneebahmed2070@gmail.com", "admin3@gmail.com"};
+    std::string adminEmails[] = {"junaibhashmi@gmail.com", "junaibhashmi@gmail.com", "admin3@gmail.com"};
 
     std::string matchedEmail = "";
     for (int i = 0; i < 3; ++i) {
@@ -29,23 +30,23 @@ bool adminLogin() {
     srand(time(0));
     int otp = rand() % 900000 + 100000;
 
-    // Use raw string literal for the command
+    // Your existing python command logic
     std::string command = R"(D:/Libra/Scripts/python.exe D:/Libra/Scripts/SendEmail.py )"
                           + matchedEmail + " " + std::to_string(otp);
-
-
 
     system(command.c_str());
 
     int userOtp;
-    std::cout << "Enter OTP sent to your email: ";
+    std::cout << "OTP sent to " << matchedEmail << ".\nEnter OTP: ";
     std::cin >> userOtp;
 
     if (userOtp == otp) {
         std::cout << "Login successful!\n";
+        system("pause"); // Wait for user to see success
         return true;
     } else {
         std::cout << "Incorrect OTP. Access denied.\n";
+        system("pause");
         return false;
     }
 }

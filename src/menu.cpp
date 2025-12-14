@@ -13,11 +13,11 @@ int runMenu() {
     const int MENU_SIZE = 6;
     string options[MENU_SIZE] = {
         "Log In as Admin",
-        "Register Voter",
-        "Register Candidate",
-        "View Live Results",
-        "Save & Load Data",
-        "Exit"
+        "Log In as Voter",
+        "Log In as Candidate",
+        "Register as Voter",
+        "Register as Candidate",
+
     };
 
     int selected = 0; // current highlighted index

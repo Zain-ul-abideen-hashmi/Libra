@@ -9,5 +9,10 @@ add_executable(Libra
         src/menu.cpp
         Include/menu.h
         src/LoginAsAdmin.cpp
-        Include/LoginAsAdmin.h)
+        Include/LoginAsAdmin.h
+        Include/models.h
+        Include/admin.h
+        Include/ElectionSystem.h
+        src/ElectionSystem.cpp
+)
 
