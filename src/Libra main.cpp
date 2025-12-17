@@ -6,35 +6,42 @@
 
 using namespace std;
 
-int main() {
-    ElectionSystem system; // Create the system object
+int main()
+{
+    ElectionSystem system; // system object ceation
 
-    while (true) {
-        int choice = runMenu(); // Your graphical menu
+    while (true)
+    {
+        int choice = runMenu(); //menu
 
-        // 0: Admin Login
-        if (choice == 0) {
-            if (Admin::login()) {
-                // If login true, show admin specific features
+
+        if (choice == 0)
+        {
+            if (Admin::login())
+            {
+
                 system.showAdminMenu();
             }
         }
-        // 1: Log In as Voter
-        else if (choice == 1) {
+
+        else if (choice == 1)
+        {
             system.voterLogin();
         }
-        // 2: Log In as Candidate (Optional logic)
-        else if (choice == 2) {
-            cout << "Candidate Login feature coming soon...\n";
-            cin.ignore(); cin.get();
+
+        else if (choice == 2)
+        {
+            system.candidateLogin();
         }
-        // 3: Register as Voter
-        else if (choice == 3) {
+
+        else if (choice == 3)
+        {
             system.registerVoter();
         }
-        // 4: Register as Candidate
-        else if (choice == 4) {
-            // Usually only Admins register candidates, but per menu:
+
+        else if (choice == 4)
+        {
+
             system.registerCandidate();
         }
     }

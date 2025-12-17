@@ -6,14 +6,14 @@
 
 using namespace std;
 
-// --- Base Class ---
+// persom base class
 class Person {
 protected:
     int id;
     string name;
 
 public:
-    Person() : id(0), name("") {} // Default constructor for arrays
+    Person() : id(0), name("") {} // default constructor for arrays
     Person(int id, string name) : id(id), name(name) {}
     virtual ~Person() {}
     virtual void displayInfo() const = 0;
@@ -22,7 +22,7 @@ public:
     int getId() const { return id; }
 };
 
-// --- Voter Class ---
+//  Voter
 class Voter : public Person {
 private:
     string cnic;
@@ -54,64 +54,70 @@ public:
     }
 };
 
-// --- Candidate Class ---
-class Candidate : public Person {
+
+class Candidate : public Person { //candidate clss
 private:
     int age;
     string party;
     string symbol;
+    string password; // <--- NEW FIELD
     int voteCount;
-    string policies[10]; // Fixed Array instead of Vector
+    string policies[10];
     int policyCount;
 
-    // Approval System
-    int approvals; // 0 to 2
+    int approvals;
     bool isApproved;
 
 public:
-    Candidate() : Person(), age(0), voteCount(0), policyCount(0), approvals(0), isApproved(false) {}
+    Candidate() : Person(), age(0), voteCount(0), policyCount(0), approvals(0), isApproved(false), password("") {}
 
-    Candidate(int id, string name, int age, string party, string symbol, int votes = 0, int app = 0, bool appr = false)
-        : Person(id, name), age(age), party(party), symbol(symbol), voteCount(votes), policyCount(0), approvals(app), isApproved(appr) {}
+    // Updated Constructor to include Password
+    Candidate(int id, string name, int age, string party, string symbol, string pwd, int votes = 0, int app = 0, bool appr = false)
+        : Person(id, name), age(age), party(party), symbol(symbol), password(pwd), voteCount(votes), policyCount(0), approvals(app), isApproved(appr) {}
 
-    void addPolicy(string p) {
-        if(policyCount < 10) {
-            policies[policyCount++] = p;
-        }
+    void addPolicy(string p)
+    {
+        if(policyCount < 10) policies[policyCount++] = p;
     }
 
-    // Helper to get raw array access (read-only logic)
-    string getPolicy(int index) const {
+    string getPolicy(int index) const
+    {
         if(index >= 0 && index < policyCount) return policies[index];
         return "";
     }
+
+    // Getters as taught by sir adeel
     int getPolicyCount() const { return policyCount; }
-
-    void displayInfo() const override {
-        cout << "--------------------------------\n";
-        cout << "[" << id << "] " << name << " (" << party << ")\n";
-        cout << "    Symbol: " << symbol << " | Votes: " << voteCount;
-        if(!isApproved) cout << " [PENDING APPROVAL: " << approvals << "/2]";
-        cout << "\n    Policies:\n";
-        for(int i=0; i<policyCount; i++) {
-            cout << "      - " << policies[i] << "\n";
-        }
-        cout << "--------------------------------\n";
-    }
-
-    void incrementVote() { voteCount++; }
+    string getPassword() const { return password; }
     int getVotes() const { return voteCount; }
     int getAge() const { return age; }
     string getParty() const { return party; }
     string getSymbol() const { return symbol; }
 
-    // Approval Logic
-    void addApproval() {
+    void incrementVote() { voteCount++; }
+
+
+    void addApproval()
+    {
         if(approvals < 2) approvals++;
         if(approvals >= 2) isApproved = true;
     }
     bool getIsApproved() const { return isApproved; }
     int getApprovalCount() const { return approvals; }
+
+    void displayInfo() const override
+    {
+        cout << "--------------++------------------\n";
+        cout << "[" << id << "] " << name << " (" << party << ")\n";
+        cout << "    Symbol: " << symbol << " | Votes: " << voteCount;
+        if(!isApproved) cout << " [PENDING APPRVAL]";
+        cout << "\n    Policie:\n";
+        for(int i=0; i<policyCount; i++)
+        {
+            cout << "      - " << policies[i] << "\n";
+        }
+        cout << "-------------------------------\n";
+    }
 };
 
 #endif

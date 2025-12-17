@@ -1,11 +1,3 @@
-"""
-Activate virtualenv for current interpreter:
-
-import runpy
-runpy.run_path(this_file)
-
-This can be used when you must use an existing Python interpreter, not the virtualenv bin/python.
-"""  # noqa: D415
 
 from __future__ import annotations
 

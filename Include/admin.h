@@ -6,7 +6,8 @@
 #define LIBRA_ADMIN_H
 
 
-class Admin {
+class Admin
+{
 public:
     static bool login(); // Static so we can call it without creating an object first
 };

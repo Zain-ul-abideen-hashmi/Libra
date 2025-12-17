@@ -3,9 +3,10 @@
 
 #include "Models.h"
 
-class ElectionSystem {
+class ElectionSystem
+{
 private:
-    // DYNAMIC ARRAYS (Replacing Vectors)
+    // DYNAMIC ARRAYS For polymorphism
     Voter* voters;
     int voterCount;
     int voterCapacity;
@@ -14,7 +15,7 @@ private:
     int candidateCount;
     int candidateCapacity;
 
-    // Memory Management
+    // Memory Managers
     void resizeVoters();
     void resizeCandidates();
 
@@ -24,22 +25,25 @@ private:
     void loadCandidates();
     void saveCandidates();
 
-    // Helpers
+    // helpers for functions
     string getCurrentTime();
     string extractJsonValue(string line, string key);
 
 public:
     ElectionSystem();
-    ~ElectionSystem(); // Destructor needed for pointers
+    ~ElectionSystem(); // Destructor needed for pointers ill explain on sunday
+
+
 
     void registerVoter();
-    void registerCandidate(); // Sets to Pending
+    void registerCandidate();
     void voterLogin();
+    void candidateLogin();
 
-    // Admin features
-    void approveCandidates(); // New Logic
-    void showAdminMenu();
+    // Admin stuff
+    void approveCandidates();
     void resetElection();
+    void showAdminMenu();
 };
 
 #endif

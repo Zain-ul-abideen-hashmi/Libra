@@ -5,13 +5,16 @@
 
 using namespace std;
 
-void setColor(int color) {
+void setColor(int color)
+{
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-int runMenu() {
+int runMenu()
+{
     const int MENU_SIZE = 6;
-    string options[MENU_SIZE] = {
+    string options[MENU_SIZE] =
+    {
         "Log In as Admin",
         "Log In as Voter",
         "Log In as Candidate",
@@ -20,37 +23,43 @@ int runMenu() {
 
     };
 
-    int selected = 0; // current highlighted index
+    int selected = 0;
 
-    while (true) {
+    while (true)
+    {
         system("cls");
 
         cout << "=== ELECTRONIC VOTING SYSTEM ===\n\n";
 
         for (int i = 0; i < MENU_SIZE; i++) {
 
-            if (i == selected) {
-                setColor(10);  // bright green for highlight
+            if (i == selected)
+            {
+                setColor(10);
                 cout << " > " << options[i] << "\n";
-                setColor(7);   // reset color to normal
-            } else {
+                setColor(7);
+            }
+            else
+             {
                 cout << "   " << options[i] << "\n";
             }
         }
 
-        char key = _getch(); //getch is taking the "value" of arrow keys in this case 72 and 80 and 13 for enter as these are sepciasl keys we can use conditionals and their values to simaulate a selectable menu thingy
+        char key = _getch();
 
-        // Up arrow
-        if (key == 72 && selected > 0) {
+        if (key == 72 && selected > 0)
+        {
             selected--;
         }
-        // Down arrow
-        else if (key == 80 && selected < MENU_SIZE - 1) {
+
+        else if (key == 80 && selected < MENU_SIZE - 1)
+        {
             selected++;
         }
-        // Enter key
-        else if (key == 13) {
-            return selected;  // return index of chosen option
+
+        else if (key == 13)
+            {
+            return selected;
         }
     }
 }

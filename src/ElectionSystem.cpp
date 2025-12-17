@@ -8,33 +8,39 @@
 using namespace std;
 
 // --- Helper Functions ---
-string ElectionSystem::getCurrentTime() {
+string ElectionSystem::getCurrentTime()
+{
     time_t now = time(0);
     string dt = ctime(&now);
     if(dt.length() > 0) dt.pop_back();
     return dt;
 }
 
-string ElectionSystem::extractJsonValue(string line, string key) {
+string ElectionSystem::extractJsonValue(string line, string key)
+{
     string search = "\"" + key + "\":";
     size_t pos = line.find(search);
     if (pos == string::npos) return "";
     pos += search.length();
     while (line[pos] == ' ') pos++;
-    if (line[pos] == '"') {
+    if (line[pos] == '"')
+    {
         size_t end = line.find("\"", pos + 1);
         return line.substr(pos + 1, end - pos - 1);
-    } else if (line[pos] == '[') {
+    } else if (line[pos] == '[')
+    {
         size_t end = line.find("]", pos);
         return line.substr(pos, end - pos + 1);
-    } else {
+    } else
+    {
         size_t end = line.find_first_of(",}", pos);
         return line.substr(pos, end - pos);
     }
 }
 
-// --- Memory Management (Dynamic Arrays) ---
-ElectionSystem::ElectionSystem() {
+// Memory Manage using arrays
+ElectionSystem::ElectionSystem()
+{
     voterCapacity = 10;
     voterCount = 0;
     voters = new Voter[voterCapacity];
@@ -47,12 +53,14 @@ ElectionSystem::ElectionSystem() {
     loadVoters();
 }
 
-ElectionSystem::~ElectionSystem() {
+ElectionSystem::~ElectionSystem()
+{
     delete[] voters;
     delete[] candidates;
 }
 
-void ElectionSystem::resizeVoters() {
+void ElectionSystem::resizeVoters()
+{
     voterCapacity *= 2;
     Voter* temp = new Voter[voterCapacity];
     for(int i=0; i<voterCount; i++) temp[i] = voters[i];
@@ -60,7 +68,8 @@ void ElectionSystem::resizeVoters() {
     voters = temp;
 }
 
-void ElectionSystem::resizeCandidates() {
+void ElectionSystem::resizeCandidates()
+{
     candidateCapacity *= 2;
     Candidate* temp = new Candidate[candidateCapacity];
     for(int i=0; i<candidateCount; i++) temp[i] = candidates[i];
@@ -68,11 +77,13 @@ void ElectionSystem::resizeCandidates() {
     candidates = temp;
 }
 
-// --- File I/O (JSON) ---
-void ElectionSystem::saveVoters() {
+// json file
+void ElectionSystem::saveVoters()
+{
     ofstream file("voters.json");
     file << "[\n";
-    for (int i = 0; i < voterCount; i++) {
+    for (int i = 0; i < voterCount; i++)
+    {
         file << "  {\n";
         file << "    \"id\": " << voters[i].getId() << ",\n";
         file << "    \"name\": \"" << voters[i].getName() << "\",\n";
@@ -86,13 +97,16 @@ void ElectionSystem::saveVoters() {
     file.close();
 }
 
-void ElectionSystem::loadVoters() {
-    voterCount = 0; // Reset
+void ElectionSystem::loadVoters()
+{
+    voterCount = 0;
     ifstream file("voters.json");
     if (!file) return;
     string line;
-    while (getline(file, line)) {
-        if (line.find("{") != string::npos) {
+    while (getline(file, line))
+    {
+        if (line.find("{") != string::npos)
+        {
             string block = "";
             while(getline(file, line) && line.find("}") == string::npos) block += line;
 
@@ -111,21 +125,25 @@ void ElectionSystem::loadVoters() {
     file.close();
 }
 
-void ElectionSystem::saveCandidates() {
+void ElectionSystem::saveCandidates()
+{
     ofstream file("candidates.json");
     file << "[\n";
-    for (int i = 0; i < candidateCount; i++) {
+    for (int i = 0; i < candidateCount; i++)
+    {
         file << "  {\n";
         file << "    \"id\": " << candidates[i].getId() << ",\n";
         file << "    \"name\": \"" << candidates[i].getName() << "\",\n";
         file << "    \"age\": " << candidates[i].getAge() << ",\n";
         file << "    \"party\": \"" << candidates[i].getParty() << "\",\n";
         file << "    \"symbol\": \"" << candidates[i].getSymbol() << "\",\n";
+        file << "    \"password\": \"" << candidates[i].getPassword() << "\",\n"; // <--- SAVING PASSWORD
         file << "    \"votes\": " << candidates[i].getVotes() << ",\n";
         file << "    \"approvals\": " << candidates[i].getApprovalCount() << ",\n";
         file << "    \"isApproved\": " << (candidates[i].getIsApproved() ? "true" : "false") << ",\n";
         file << "    \"policies\": [";
-        for(int p=0; p < candidates[i].getPolicyCount(); p++) {
+        for(int p=0; p < candidates[i].getPolicyCount(); p++)
+        {
             file << "\"" << candidates[i].getPolicy(p) << "\"" << (p < candidates[i].getPolicyCount()-1 ? ", " : "");
         }
         file << "]\n";
@@ -135,15 +153,19 @@ void ElectionSystem::saveCandidates() {
     file.close();
 }
 
-void ElectionSystem::loadCandidates() {
+void ElectionSystem::loadCandidates()
+{
     candidateCount = 0;
     ifstream file("candidates.json");
     if (!file) return;
     string line;
-    while (getline(file, line)) {
-        if (line.find("{") != string::npos) {
+    while (getline(file, line))
+    {
+        if (line.find("{") != string::npos)
+        {
             string block = "";
-            while(getline(file, line)) {
+            while(getline(file, line))
+            {
                 block += line;
                 if(line.find("}") != string::npos) break;
             }
@@ -155,13 +177,14 @@ void ElectionSystem::loadCandidates() {
             int age = stoi(extractJsonValue(block, "age"));
             string party = extractJsonValue(block, "party");
             string symbol = extractJsonValue(block, "symbol");
+            string pwd = extractJsonValue(block, "password"); // <--- LOADING PASSWORD
             int votes = stoi(extractJsonValue(block, "votes"));
             int apps = stoi(extractJsonValue(block, "approvals"));
             bool isApp = (extractJsonValue(block, "isApproved") == "true");
 
-            candidates[candidateCount] = Candidate(id, name, age, party, symbol, votes, apps, isApp);
+            // Update Constructor Call
+            candidates[candidateCount] = Candidate(id, name, age, party, symbol, pwd, votes, apps, isApp);
 
-            // Extract policies
             string polArr = extractJsonValue(block, "policies");
             string temp = "";
             bool insideQuote = false;
@@ -176,52 +199,53 @@ void ElectionSystem::loadCandidates() {
     }
     file.close();
 }
+// Main functions
 
-// --- Main Features ---
-
-void ElectionSystem::registerCandidate() {
-    string name, party, symbol;
+void ElectionSystem::registerCandidate()
+{
+    string name, party, symbol, pwd; //pwd stands for passwqrd btw
     int age;
-    cout << "\n--- CANDIDATE REGISTRATION (Starts as Pending) ---\n";
+    cout << "\n--- CANDIDATE REGISTRATION ---\n";
     cout << "Name: "; cin.ignore(); getline(cin, name);
     cout << "Age: "; cin >> age;
     cout << "Party: "; cin.ignore(); getline(cin, party);
     cout << "Symbol: "; getline(cin, symbol);
+    cout << "Create Login Password: "; cin >> pwd; // <--- INPUT
 
     if(candidateCount == candidateCapacity) resizeCandidates();
 
-    // Init with 0 approvals
-    candidates[candidateCount] = Candidate(candidateCount + 1, name, age, party, symbol, 0, 0, false);
 
-    // Add 8 Policies
-    string p;
-    cout << "Enter 3 main policies (for demo):\n";
-    for(int i=0; i<3; i++) {
-        cout << "Policy " << i+1 << ": "; getline(cin, p);
-        candidates[candidateCount].addPolicy(p);
-    }
+    candidates[candidateCount] = Candidate(candidateCount + 1, name, age, party, symbol, pwd, 0, 0, false);
+
+
+    candidates[candidateCount].addPolicy("Economic Growth");
+    candidates[candidateCount].addPolicy("Better Education");
+    candidates[candidateCount].addPolicy("Healthcare Reform");
 
     candidateCount++;
     saveCandidates();
-    cout << "Candidate Registered! Status: Pending Approval by 2 Admins.\n";
+    cout << "Candidate Registered! Login ID is: " << candidateCount << "\n";
     _getch();
 }
 
-void ElectionSystem::approveCandidates() {
+void ElectionSystem::approveCandidates()
+{
     system("cls");
     cout << "\n--- PENDING APPROVALS ---\n";
     bool foundPending = false;
 
-    for(int i=0; i<candidateCount; i++) {
-        if(!candidates[i].getIsApproved()) {
+    for(int i=0; i<candidateCount; i++)
+    {
+        if(!candidates[i].getIsApproved())
+        {
             foundPending = true;
             candidates[i].displayInfo();
 
             char choice;
             cout << "Approve this candidate? (y/n): "; cin >> choice;
-            if(choice == 'y' || choice == 'Y') {
-                // Logic: 2 Admins needed.
-                // In real app, we check logged in ID. Here we simulate.
+            if(choice == 'y' || choice == 'Y')
+            {
+
 
                 int approvalsNeeded = 2 - candidates[i].getApprovalCount();
                 cout << "Current Approvals: " << candidates[i].getApprovalCount() << "/2\n";
@@ -246,18 +270,23 @@ void ElectionSystem::approveCandidates() {
     _getch();
 }
 
-void ElectionSystem::voterLogin() {
+void ElectionSystem::voterLogin()
+{
     string cnic, pwd;
-    cout << "\n--- VOTER LOGIN ---\n";
+    cout << "\n--- VOTER LOGIN --\n";
     cout << "Enter CNIC: "; cin >> cnic;
 
     bool found = false;
-    for (int i = 0; i < voterCount; i++) {
-        if (voters[i].getCnic() == cnic) {
+    for (int i = 0; i < voterCount; i++)
+    {
+        if (voters[i].getCnic() == cnic)
+        {
             found = true;
             cout << "Password: "; cin >> pwd;
-            if (voters[i].checkPassword(pwd)) {
-                if (voters[i].getStatus()) {
+            if (voters[i].checkPassword(pwd))
+            {
+                if (voters[i].getStatus())
+                {
                     cout << "Error: You already voted on " << voters[i].getVoteTime() << "!\n";
                 } else {
                     // --- VOTING PROCESS ---
@@ -303,14 +332,18 @@ void ElectionSystem::voterLogin() {
                         }
                     }
 
-                    if(voted) {
+                    if(voted)
+                    {
                         saveCandidates();
                         saveVoters();
-                    } else {
+                    } else
+                    {
                         cout << "Invalid ID.\n";
                     }
                 }
-            } else {
+            }
+            else
+            {
                 cout << "Wrong Password.\n";
             }
             break;
@@ -320,8 +353,96 @@ void ElectionSystem::voterLogin() {
     _getch();
 }
 
-void ElectionSystem::registerVoter() {
-    // Logic same as before, just using array
+
+void ElectionSystem::candidateLogin()
+{
+    int id;
+    string pwd;
+    cout << "\n--- CANDIDATE LOGIN --\n";
+    cout << "Enter Candidate ID: "; cin >> id;
+
+    int index = -1;
+
+    for(int i=0; i<candidateCount; i++)
+    {
+        if(candidates[i].getId() == id)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if(index == -1) {
+        cout << "Candidate ID not found.\n";
+        _getch(); return;
+    }
+
+    cout << "Enter Password: "; cin >> pwd;
+    if(candidates[index].getPassword() != pwd) {
+        cout << "Incorrect Password.\n";
+        _getch(); return;
+    }
+
+
+    while(true) {
+        system("cls");
+        cout << "=== WELCOME " << candidates[index].getName() << " ===\n";
+        cout << "Party: " << candidates[index].getParty() << "\n\n";
+        cout << "1. View Campaign Status & Win Probability\n";
+        cout << "2. Log Out\n";
+        cout << "Choice: ";
+
+        int choice; cin >> choice;
+
+        if(choice == 1)
+            {
+            system("cls");
+            cout << "\n--- CAMPAIGN ANALYTICS ---\n";
+
+
+            cout << "Approval Status: ";
+            if(candidates[index].getIsApproved()) cout << "[APPROVED] (Live for voting)\n";
+            else cout << "[PENDING] (Approvals: " << candidates[index].getApprovalCount() << "/2)\n";
+
+
+            int myVotes = candidates[index].getVotes();
+            cout << "Current Votes:   " << myVotes << "\n";
+
+
+            int totalVotes = 0;
+            for(int i=0; i<candidateCount; i++)
+            {
+                totalVotes += candidates[i].getVotes();
+            }
+
+            cout << "Win Probability: ";
+            if(totalVotes == 0)
+            {
+                cout << "0% (No votes cast yet)\n";
+            } else
+            {
+                float prob = ((float)myVotes / totalVotes) * 100.0f;
+                cout << prob << "% ";
+
+
+                if(prob > 50) cout << "(Strong Lead for now)";
+                else if(prob > 20) cout << "(Its aight)";
+                else cout << "(your not winning )";
+                cout << "\n";
+            }
+            cout << "\n---------------------------\n";
+            _getch();
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+
+void ElectionSystem::registerVoter()
+{
+
     if(voterCount == voterCapacity) resizeVoters();
 
     string name, cnic, pwd;
@@ -329,8 +450,10 @@ void ElectionSystem::registerVoter() {
     cout << "Name: "; cin.ignore(); getline(cin, name);
     cout << "CNIC: "; cin >> cnic;
 
-    for(int i=0; i<voterCount; i++) {
-        if(voters[i].getCnic() == cnic) {
+    for(int i=0; i<voterCount; i++)
+    {
+        if(voters[i].getCnic() == cnic)
+        {
             cout << "Duplicate CNIC.\n";
              _getch(); return;
         }
@@ -343,8 +466,10 @@ void ElectionSystem::registerVoter() {
     _getch();
 }
 
-void ElectionSystem::showAdminMenu() {
-    while(true) {
+void ElectionSystem::showAdminMenu()
+{
+    while(true)
+    {
         system("cls");
         cout << "--- ADMIN PANEL ---\n";
         cout << "1. Approve Pending Candidates\n";
@@ -357,11 +482,14 @@ void ElectionSystem::showAdminMenu() {
         cin >> c;
 
         if(c == 1) approveCandidates();
-        else if(c == 2) {
+        else if(c == 2)
+        {
             cout << "\n--- LIVE STANDINGS ---\n";
             bool dataFound = false;
-            for(int i=0; i<candidateCount; i++) {
-                if(candidates[i].getIsApproved()) {
+            for(int i=0; i<candidateCount; i++)
+            {
+                if(candidates[i].getIsApproved())
+                {
                     cout << candidates[i].getName() << " (" << candidates[i].getParty() << "): "
                          << candidates[i].getVotes() << " votes\n";
                     dataFound = true;
@@ -370,14 +498,16 @@ void ElectionSystem::showAdminMenu() {
             if(!dataFound) cout << "No approved candidates to show.\n";
             _getch();
         }
-        else if(c == 3) {
+        else if(c == 3)
+        {
             resetElection(); // <--- Call the new function
         }
         else break;
     }
 }
 
-void ElectionSystem::resetElection() {
+void ElectionSystem::resetElection()
+{
     char confirm;
     system("cls");
     cout << "\n=======================================================\n";
@@ -391,13 +521,13 @@ void ElectionSystem::resetElection() {
     cout << "\nAre you sure you want to proceed? (y/n): ";
     cin >> confirm;
 
-    if (confirm == 'y' || confirm == 'Y') {
-        // 1. Reset Memory Counters
+    if (confirm == 'y' || confirm == 'Y')
+    {
+
         voterCount = 0;
         candidateCount = 0;
 
-        // 2. Overwrite Files with empty JSON arrays
-        // opening with ios::trunc deletes previous content
+
         ofstream vFile("voters.json", ios::trunc);
         vFile << "[]";
         vFile.close();
@@ -408,7 +538,9 @@ void ElectionSystem::resetElection() {
 
         cout << "\n> Election Ended.\n> All Data Wiped.\n> System Reset Successfully.\n";
         _getch();
-    } else {
+    }
+    else
+    {
         cout << "\nAction Cancelled. Data is safe.\n";
         _getch();
     }

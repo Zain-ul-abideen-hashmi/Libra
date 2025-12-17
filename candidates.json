@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": 1,
+    "name": "aisal Zia",
+    "age": 42,
+    "party": "PTI",
+    "symbol": "Omega",
+    "password": "abcd",
+    "votes": 0,
+    "approvals": 0,
+    "isApproved": false,
+    "policies": ["Economic Growth", "Better Education", "Healthcare Reform"]
+  }
+]
