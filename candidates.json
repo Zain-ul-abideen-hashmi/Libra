@@ -1,14 +1,26 @@
 [
   {
     "id": 1,
-    "name": "aisal Zia",
-    "age": 42,
-    "party": "PTI",
-    "symbol": "Omega",
-    "password": "abcd",
+    "name": "umer",
+    "age": 21,
+    "party": "nigger",
+    "symbol": "Hitler",
+    "password": "heilhitler",
     "votes": 0,
-    "approvals": 0,
-    "isApproved": false,
+    "approvals": 2,
+    "isApproved": true,
+    "policies": ["Economic Growth", "Better Education", "Healthcare Reform"]
+  },
+  {
+    "id": 2,
+    "name": "MaazUmer",
+    "age": 39,
+    "party": "niggers",
+    "symbol": "Dih",
+    "password": "6969",
+    "votes": 1,
+    "approvals": 2,
+    "isApproved": true,
     "policies": ["Economic Growth", "Better Education", "Healthcare Reform"]
   }
 ]

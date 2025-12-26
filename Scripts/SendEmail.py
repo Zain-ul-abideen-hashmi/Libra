@@ -7,7 +7,7 @@ def send_email(receiver_email, code):
     sender_email = "libra.project.admi@gmail.com"
     app_password = "kwcv iybf yisq gtub"
 
-    subject = "Your Voting Verification Code"
+    subject = "Your admin  Verification Code is "
     body = f"Your verification code is: {code}"
 
     msg = MIMEMultipart()

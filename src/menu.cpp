@@ -1,6 +1,6 @@
 #include <iostream>
-#include <conio.h>     // for _getch()
-#include <windows.h>   // for SetConsoleTextAttribute()
+#include <conio.h>
+#include <windows.h>
 #include "../Include/menu.h"
 
 using namespace std;
@@ -29,7 +29,7 @@ int runMenu()
     {
         system("cls");
 
-        cout << "=== ELECTRONIC VOTING SYSTEM ===\n\n";
+        cout << "=== LIBRA ===\n\n";
 
         for (int i = 0; i < MENU_SIZE; i++) {
 

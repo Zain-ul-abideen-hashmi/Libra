@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// --- Helper Functions ---
+//Helper Functions
 string ElectionSystem::getCurrentTime()
 {
     time_t now = time(0);
@@ -205,7 +205,7 @@ void ElectionSystem::registerCandidate()
 {
     string name, party, symbol, pwd; //pwd stands for passwqrd btw
     int age;
-    cout << "\n--- CANDIDATE REGISTRATION ---\n";
+    cout << "\n-- cANDIDATE REGISTRATION ---\n";
     cout << "Name: "; cin.ignore(); getline(cin, name);
     cout << "Age: "; cin >> age;
     cout << "Party: "; cin.ignore(); getline(cin, party);
@@ -224,7 +224,7 @@ void ElectionSystem::registerCandidate()
 
     candidateCount++;
     saveCandidates();
-    cout << "Candidate Registered! Login ID is: " << candidateCount << "\n";
+    cout << "Candidate Registered Login ID is: " << candidateCount << "\n";
     _getch();
 }
 
@@ -251,7 +251,7 @@ void ElectionSystem::approveCandidates()
                 cout << "Current Approvals: " << candidates[i].getApprovalCount() << "/2\n";
                 cout << "Need " << approvalsNeeded << " more unique admin login(s) to approve.\n";
 
-                // Simulate Admin Approval
+                // confirmation
                 string adminName;
                 cout << "Enter Admin Name to sign off: "; cin >> adminName;
 
@@ -259,7 +259,7 @@ void ElectionSystem::approveCandidates()
                 cout << "Approval added!\n";
 
                 if(candidates[i].getIsApproved()) {
-                    cout << ">>> CANDIDATE IS NOW LIVE! <<<\n";
+                    cout << " CANDIDATE IS LIVE <<<\n";
                 }
                 saveCandidates();
             }
@@ -319,13 +319,14 @@ void ElectionSystem::voterLogin()
                             char wantEmail;
                             cout << "\nVote Cast! Do you want a commemorative card? (y/n): ";
                             cin >> wantEmail;
+
                             if(wantEmail == 'y' || wantEmail == 'Y') {
                                 string email;
                                 cout << "Enter Email: "; cin >> email;
-                                cout << "Generating Card (please wait)...\n";
+                                cout << "Sending Card (please wait)...\n";
 
-                                // Call Python
-                                string cmd = R"(D:/Libra/Scripts/activate_this.py D:/Libra/Scripts/GenerateCard.py )" + email;
+                                string cmd = R"(D:/Libra/Scripts/python.exe D:/Libra/Scripts/SendCard.py )" + email;
+
                                 system(cmd.c_str());
                             }
                             break;
@@ -510,9 +511,9 @@ void ElectionSystem::resetElection()
 {
     char confirm;
     system("cls");
-    cout << "\n=======================================================\n";
-    cout << "!!! DANGER: ENDING ELECTION !!!";
-    cout << "\n=======================================================\n";
+    cout << "\n=====================================================\n";
+    cout << "!!! DANGER: ENDING ELECTION ";
+    cout << "\n======================================================\n";
     cout << "This action will:\n";
     cout << "1. DELETE all registered Voter data.\n";
     cout << "2. DELETE all Candidate data and policies.\n";

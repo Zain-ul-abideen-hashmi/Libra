@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include "../Include/menu.h"
-#include "../Include/Admin.h"         // Changed from LoginAsAdmin.h
-#include "../Include/ElectionSystem.h" // Include logic
+#include "../Include/Admin.h"
+#include "../Include/ElectionSystem.h"
 
 using namespace std;
 

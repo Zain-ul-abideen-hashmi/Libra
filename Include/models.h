@@ -71,7 +71,7 @@ private:
 public:
     Candidate() : Person(), age(0), voteCount(0), policyCount(0), approvals(0), isApproved(false), password("") {}
 
-    // Updated Constructor to include Password
+    // Updat construc with pwd
     Candidate(int id, string name, int age, string party, string symbol, string pwd, int votes = 0, int app = 0, bool appr = false)
         : Person(id, name), age(age), party(party), symbol(symbol), password(pwd), voteCount(votes), policyCount(0), approvals(app), isApproved(appr) {}
 
